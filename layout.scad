@@ -45,7 +45,7 @@ module _stepper_mount(stepper_offset_z) {
     stepper_offset_z=stepper_offset_z,
     stepper_shaft_base_dia=stepper_shaft_base_dia,
     stepper_mounting_hole_offset=stepper_mounting_hole_offset,
-    stepper_mounting_hole_dia=stepper_mounting_hole_dia,
+    stepper_mounting_hole_dia=small_heatset_external_dia,
     base_heatset_z=large_heatset_z,
     base_heatset_external_dia=large_heatset_external_dia
   );
