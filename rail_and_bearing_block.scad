@@ -52,6 +52,15 @@ module rail_and_bearing_block(rail_sep_z, rail_dia, rail_sep_y, bearing_dia, bea
           }
         }
       }
+      // rail heatsets
+      for (sign = [-1, 1]) {
+        translate([rail_and_bearing_block_x/2 - rail_dia*2.5, sign*(rail_and_bearing_block_y/2 + 1), shaft_z]) {
+          rotate([sign*90, 0, 0]) {
+            cylinder(d=heatset_inner_dia, h=rail_dia*2.5 + 1);
+            cylinder(d=heatset_outer_dia, h=heatset_z+1);
+          }
+        }
+      }
     }
   }
 }
