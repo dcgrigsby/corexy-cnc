@@ -75,6 +75,3 @@ rail_and_bearing_block(
   heatset_inner_dia=3,
   heatset_z=5
 );
-
-// TODO
-// heatsets for rails, also bearing (<-new)
