@@ -1,10 +1,11 @@
 include <leg.scad>
 include <rail.scad>
 include <stepper_mount.scad>
+include <rail_and_bearing_block.scad>
 
 pulley_dia = 10;
 
-rail_length=330;
+rail_length=406;
 rail_dia=8;
 
 first_rail_z=40;
@@ -37,6 +38,25 @@ left_stepper_mount_offset_x = leg_xy/2 + pulley_dia/2 + 5;
 
 right_stepper_mount_offset_y = left_stepper_mount_offset_y;
 right_stepper_mount_offset_x = -left_stepper_mount_offset_x;
+
+bearing_dia = 15;
+bearing_y = 24;
+
+rail_and_bearing_block_z_offset = (rail_and_bearing_block_z(rail_dia, bearing_dia, rail_sep) - rail_and_bearing_block_z_padding(rail_dia, bearing_dia))/4 - bearing_dia/2;
+rail_and_bearing_block_bearing_x_offset = rail_and_bearing_block_x(rail_dia, bearing_dia)/2 - rail_and_bearing_block_bearing_padding_x(bearing_dia)/2;
+
+module _rail_and_bearing_block() {
+  rail_and_bearing_block(
+    rail_sep_z = rail_sep,
+    rail_dia = rail_dia,
+    rail_sep_y = rail_sep, //could|should change
+    bearing_dia = bearing_dia,
+    bearing_y = bearing_y,
+    heatset_external_dia=small_heatset_external_dia,
+    heatset_internal_dia=small_heatset_internal_dia,
+    heatset_z=small_heatset_z
+  );
+}
 
 module _stepper_mount(stepper_offset_z) {
   stepper_mount(
@@ -81,7 +101,7 @@ module _leg() {
 }
 
 translate([rail_length/2 + rail_dia, rail_length/2 + rail_dia, 0]) {
-  rotate([0, 0, 180]) {
+    rotate([0, 0, 180]) {
     _leg();
     _rail_pair();
   }
@@ -110,12 +130,32 @@ translate([rail_length/2 + rail_dia, -rail_length/2 - rail_dia, 0]) {
   translate([right_stepper_mount_offset_x, right_stepper_mount_offset_y, 0]) {
     _stepper_mount(right_stepper_offset_z);
   }
+}
 
+translate([-rail_length/2 - rail_dia + rail_and_bearing_block_bearing_x_offset, 0, rail_and_bearing_block_z_offset]) {
+  _rail_and_bearing_block();
+}
+
+rotate([0, 0, 90]) {
+  translate([-rail_length/2 - rail_dia + rail_and_bearing_block_bearing_x_offset, 0, rail_and_bearing_block_z_offset]) {
+    _rail_and_bearing_block();
+  }
+}
+
+rotate([0, 0, 180]) {
+  translate([-rail_length/2 - rail_dia + rail_and_bearing_block_bearing_x_offset, 0, rail_and_bearing_block_z_offset]) {
+    _rail_and_bearing_block();
+  }
+}
+
+rotate([0, 0, 270]) {
+  translate([-rail_length/2 - rail_dia + rail_and_bearing_block_bearing_x_offset, 0, rail_and_bearing_block_z_offset]) {
+    _rail_and_bearing_block();
+  }
 }
 
 /*
 todo:
-stepper_mount to use small heatsets
 gantry, of course
 table corner thingie
 */
